@@ -54,6 +54,7 @@ class Sprite {
     }
 
     this.isAttacking;
+    this.health = 100;
   }
   draw() {
     c.fillStyle = this.color;
@@ -210,19 +211,22 @@ function animate() {
   } else if (keys.ArrowUp.pressed && enemy.lastKey === 'ArrowUp') {
     enemy.velocity.y = -5
   }
-  // attack
+  // player attack
 
   if (
     charAttack(player, enemy)
   ) {
     player.isAttacking = false;
-    console.log('go')
+    enemy.health -= 20;
+    document.querySelector('#enemyhealth').style.width = enemy.health + '%';
   }
+  // enemy attack
   if (
     charAttack(enemy, player)
   ) {
     enemy.isAttacking = false;
-    console.log('enemy attacking')
+    player.health -= 20;
+    document.querySelector('#playerhealth').style.width = player.health + '%';
   }
 }
 animate()
