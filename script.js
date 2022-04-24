@@ -57,7 +57,7 @@ const shop = new Sprite({
 })
 const player = new Fighter({
   position: {
-    x: 100,
+    x: 30,
     y: 0
   },
   velocity: {
@@ -65,33 +65,49 @@ const player = new Fighter({
     y: 0
   },
   offset: {
-    x: 0,
-    y: 0
+    x: 120,
+    y: 55
   },
-  imageSrc: './img/Martial Hero/Sprites/Idle.png',
-  scale: 2,
+  imageSrc: './img/player/Idle.png',
+  scale: 2.1,
   frames: 8,
-  offsetImg: {
-    x: 200,
-    y: 95
-  },
   sprites: {
     idle: {
-      imageSrc: './img/Martial Hero/Sprites/Idle.png',
+      imageSrc: './img/player/Idle.png',
       frames: 8
     },
     run: {
-      imageSrc: './img/Martial Hero/Sprites/Run.png',
+      imageSrc: './img/player/Run.png',
       frames: 8
     },
     jump: {
-      imageSrc: './img/Martial Hero/Sprites/Jump.png',
+      imageSrc: './img/player/Jump.png',
       frames: 2
     },
     fall: {
-      imageSrc: './img/Martial Hero/Sprites/Fall.png',
+      imageSrc: './img/player/Fall.png',
       frames: 2
+    },
+    attack1: {
+      imageSrc: './img/player/Attack2.png',
+      frames: 5
+    },
+    takeHit: {
+      imageSrc: './img/player/Take hit.png',
+      frames: 3
+    },
+    death: {
+      imageSrc: './img/player/Death.png',
+      frames: 8
     }
+  },
+  attackBox: {
+    offset: {
+      x: 45,
+      y: 80
+    },
+    width: 100,
+    height: 50
   }
 })
 
@@ -104,14 +120,54 @@ const enemy = new Fighter({
     x: 0,
     y: 0
   },
-  color: 'red',
   offset: {
-    x: -50,
-    y: 0
+    x: 90,
+    y: 55
+  },
+  imageSrc: './img/enemy_samurai/Idle.png',
+  scale: 1.6,
+  frames: 4,
+  sprites: {
+    idle: {
+      imageSrc: './img/enemy_samurai/Idle.png',
+      frames: 4
+    },
+    run: {
+      imageSrc: './img/enemy_samurai/Run.png',
+      frames: 8
+    },
+    jump: {
+      imageSrc: './img/enemy_samurai/Jump.png',
+      frames: 2
+    },
+    fall: {
+      imageSrc: './img/enemy_samurai/Fall.png',
+      frames: 2
+    },
+    attack1: {
+      imageSrc: './img/enemy_samurai/Attack1.png',
+      frames: 4
+    },
+    takeHit: {
+      imageSrc: './img/enemy_samurai/Take hit.png',
+      frames: 3
+    },
+    death: {
+      imageSrc: './img/enemy_samurai/Death.png',
+      frames: 7
+    }
+  },
+  attackBox: {
+    offset: {
+      x: -50,
+      y: 80
+    },
+    width: 100,
+    height: 50
   }
 })
 // events
-window.addEventListener('keydown', (event) => {
+const handleKey = (event) => {
   switch (event.key) {
     case 'a':
       keys.a.pressed = true;
@@ -143,7 +199,8 @@ window.addEventListener('keydown', (event) => {
       enemy.velocity.y = -10;
       break;
   }
-})
+}
+window.addEventListener('keydown', handleKey)
 
 window.addEventListener('keyup', (event) => {
   switch (event.key) {
@@ -176,7 +233,6 @@ function charAttack(char1, char2) {
     && char1.attackBox.position.x <= char2.position.x + char2.width
     && char1.attackBox.position.y + char1.attackBox.height >= char2.position.y
     && char1.attackBox.position.y <= char2.position.y + char2.height
-    && char1.isAttacking
   )
 }
 
@@ -189,7 +245,7 @@ function animate() {
   background.update();
   shop.update();
   player.update();
-  // enemy.update();
+  enemy.update();
   player.velocity.x = 0
   enemy.velocity.x = 0
   // player movement
@@ -212,31 +268,55 @@ function animate() {
   // enemy movement
   if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
     enemy.velocity.x = -3
+    enemy.switchImage('run');
   } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
     enemy.velocity.x = 3
+    enemy.switchImage('run');
+  } else {
+    enemy.switchImage('idle')
+  }
+  if (enemy.velocity.y < 0) {
+    enemy.switchImage('jump')
+  } else if (enemy.velocity.y > 0) {
+    enemy.switchImage('fall')
   }
 
   // player attack
-
   if (
     charAttack(player, enemy)
+    && player.isAttacking
+    && player.frameCurrent === 3
   ) {
+    enemy.takeHit();
     player.isAttacking = false;
-    enemy.health -= 20;
     document.querySelector('#enemyhealth').style.width = enemy.health + '%';
   }
+  // attack missing
+
+  if (player.isAttacking && player.frameCurrent === 3) {
+    player.isAttacking = false;
+  }
+
   // enemy attack
   if (
     charAttack(enemy, player)
+    && enemy.isAttacking
+    && enemy.frameCurrent === 2
   ) {
+    player.takeHit()
     enemy.isAttacking = false;
-    player.health -= 20;
     document.querySelector('#playerhealth').style.width = player.health + '%';
+  }
+  if (enemy.isAttacking && enemy.frameCurrent === 2) {
+    enemy.isAttacking = false;
   }
   // end game based on health
   if (player.health <= 0 || enemy.health <= 0) {
     determineWiner({ player, enemy, timeoutID });
+    window.removeEventListener('keydown', handleKey);
+
   }
+
 }
 animate()
 

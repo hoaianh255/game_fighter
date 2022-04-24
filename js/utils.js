@@ -1,4 +1,4 @@
-let timer = 15;
+let timer = 120;
 let timeoutID;
 function determineWiner({ player, enemy, timeoutID }) {
   clearTimeout(timeoutID)
@@ -20,4 +20,5 @@ function decreaseTimer() {
   if (timer == 0) {
     determineWiner({ player, enemy, timeoutID })
   }
+
 }

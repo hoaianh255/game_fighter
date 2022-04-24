@@ -6,45 +6,60 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Game fighter</title>
-  <style>
+<!-- fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,500;0,700;1,400&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style> 
+    *{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
     body {
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: calc(100vh - 200px);
+      min-height: 100vh;
+      font-family: 'Press Start 2P', cursive;
+      flex-direction: column;
     }
   </style>
 </head>
 
 <body>
   <div style="position: relative;display: inline-block;">
-    <div style="position: absolute;display: flex;width: 100%;align-items: center;">
+    <div style="position: absolute;display: flex;width: 100%;align-items: center;padding: 20px;">
       <!-- player health -->
 
-      <div style="position: relative;width: 100%;height: 30px;display: flex;">
-        <div style="height:30px;background-color: yellow;width: 100%;"></div>
+      <div style="position: relative;width: 100%;display: flex;border: 2px solid white;">
+        <div style="height:30px;background-color: #30336b;width: 100%;"></div>
         <div id="playerhealth"
-          style="position: absolute;top: 0;right: 0; background-color: lightblue;width: 100%;height: 30px;"></div>
+          style="position: absolute;top: 0;right: 0; background-color: #eb4d4b;width: 100%;height: 30px;"></div>
       </div>
 
       <!-- timer -->
 
       <div id="timer"
-        style="width: 100px;height: 60px; background-color: red;flex-shrink: 0;text-align: center;line-height: 60px;color: white;font-weight: bold;font-size: 24px;">
+        style="width: 100px;height: 50px; background-color: #f9ca24;flex-shrink: 0;text-align: center;line-height: 50px;color: #6ab04c;font-weight: bold;font-size: 24px;border: 2px solid #6ab04c;">
 
       </div>
       <!-- enemy health -->
 
-      <div style="position: relative;width: 100%;height: 30px;">
-        <div style="height:30px;background-color: yellow;"></div>
+      <div style="position: relative;width: 100%;border: 2px solid white;">
+        <div style="height:30px;background-color: #30336b;"></div>
         <div id="enemyhealth"
-          style="position: absolute;top: 0;left: 0; background-color: lightblue;width: 100%;height: 30px;"></div>
+          style="position: absolute;top: 0;left: 0; background-color: #eb4d4b;width: 100%;height: 30px;"></div>
       </div>
     </div>
     <div id="displayText"
       style="position: absolute;top: 0;left: 0;right: 0;bottom: 0;display: flex;justify-content: center;align-items: center;color: white;font-size: 30px;text-transform: uppercase;">
     </div>
     <canvas></canvas>
+  </div>
+  <div style="padding: 50px 0;">
+    <p style="color: #6ab04c;text-align: center;font-size: 24px;">Guide the keys to move</p>
+    <p style="color: #30336b;margin-top: 30px"><span style="color: #eb4d4b;">Player 1: </span>Press A, D, W, S to movement and Space to attack</p>
+    <p style="color: #30336b;margin-top: 30px;"><span style="color: #eb4d4b;">Player 2: </span>Press <i class="fa-solid fa-arrow-left"></i>, <i class="fa-solid fa-arrow-right"></i>, <i class="fa-solid fa-arrow-up"></i> to movement and <i class="fa-solid fa-arrow-down"></i> to attack</p>
   </div>
   <!-- Health bar and timer -->
 
