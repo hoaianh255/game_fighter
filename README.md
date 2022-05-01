@@ -9,7 +9,7 @@
 This game is a fighting game. Fighting video games are games in which the player controls a character who engages in a duel with another character on a limited screen.Through this project for me to have more knowledge about html,css and javascript. How to DOM, work with canvas, act on javascript events, etc...
 
 *This project is guided by* [Chris Courses](https://www.youtube.com/channel/UC9Yp2yz6-pwhQuPlIDV_mjA)
->## illustrating images
+>## Illustrating images
 
 ![screenshort_1](./screenshort-1.png)
 *Game begins*
